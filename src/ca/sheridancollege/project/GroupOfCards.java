@@ -1,55 +1,46 @@
-/**
- * SYST 17796 Project Base code.
- * Students can modify and extend to implement their game.
- * Add your name as an author and the date!
- */
 package ca.sheridancollege.project;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Scanner;
 
-/**
- * A concrete class that represents any grouping of cards for a Game. HINT, you might want to subclass this more than
- * once. The group of cards has a maximum size attribute which is flexible for reuse.
- *
- * @author dancye
- * @author Paul Bonenfant Jan 2020
- */
 public class GroupOfCards {
 
-    //The group of cards, stored in an ArrayList
-    private ArrayList<Card> cards;
-    private int size;//the size of the grouping
+    public static void main(String[] args) {
 
-    public GroupOfCards(int size) {
-        this.size = size;
+        Scanner input = new Scanner(System.in);
+        ArrayList<Player> players = new ArrayList<>();
+
+        System.out.println("Enter the name of the game: ");
+        String gameName = input.nextLine();
+        Game game = new Game(gameName) {
+            @Override
+            public void play() {
+                System.out.println("The game is starting!");
+            }
+
+            @Override
+            public void declareWinner() {
+                System.out.println("The winner is " + players.get(0).getPlayerName());
+            }
+        };
+
+        System.out.println("Enter the number of players: ");
+        int numOfPlayers = input.nextInt();
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            System.out.println("Enter player " + (i + 1) + " name: ");
+            String playerName = input.next();
+            Player player = new Player(playerName) {
+                @Override
+                public void play() {
+                    System.out.println();
+                }
+            };
+            players.add(player);
+        }
+
+        game.setPlayers(players);
+        game.play();
+        game.declareWinner();
     }
-
-    /**
-     * A method that will get the group of cards as an ArrayList
-     *
-     * @return the group of cards.
-     */
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-
-    public void shuffle() {
-        Collections.shuffle(cards);
-    }
-
-    /**
-     * @return the size of the group of cards
-     */
-    public int getSize() {
-        return size;
-    }
-
-    /**
-     * @param size the max size for the group of cards
-     */
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-}//end class
+}
